@@ -36,7 +36,6 @@ CREATE TABLE `Airports` (
 
 LOCK TABLES `Airports` WRITE;
 /*!40000 ALTER TABLE `Airports` DISABLE KEYS */;
-INSERT INTO `Airports` VALUES ('SJC','San Jose','United States'),('SMF','Sacramento','United States');
 /*!40000 ALTER TABLE `Airports` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-16 21:24:42
+-- Dump completed on 2018-11-17  9:58:07
