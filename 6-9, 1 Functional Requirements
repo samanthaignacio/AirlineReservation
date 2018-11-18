@@ -4,9 +4,9 @@ DELIMITER //
 CREATE PROCEDURE getFlightAirline(
 IN airlineName_in VARCHAR(45))
 BEGIN 
-	  SELECT flightID, airlineName
-    FROM Airline natural join FlightSchedules
-    WHERE airlineName = airlineName_in;
+	SELECT flightID, airlineName
+    	FROM Airline natural join FlightSchedules
+    	WHERE airlineName = airlineName_in;
 END//
 DELIMITER;
 
@@ -17,9 +17,9 @@ CREATE PROCEDURE getFlightDate(
 IN flightDepartDate_in DATE, 
 IN flightArrivalDate_in DATE)
 BEGIN  
-	  SELECT flightID, departDate, ArrivalDate
-    FROM FlightSchedules
-    WHERE departDate = flightDepartDate_in AND arrivalDate = flightArrivalDate_in;
+	SELECT flightID, departDate, ArrivalDate
+   	FROM FlightSchedules
+    	WHERE departDate = flightDepartDate_in AND arrivalDate = flightArrivalDate_in;
 END
 DELIMITER;
 
@@ -31,8 +31,8 @@ IN flightDepartTime_in TIME,
 IN flightArrivalTime_in TIME)
 BEGIN  
 	SELECT flightID, departTime, ArrivalTime
-    FROM FlightSchedules
-    WHERE departTime = flightDepartTime_in AND arrivalTime = flightArrivalTime_in;
+    	FROM FlightSchedules
+    	WHERE departTime = flightDepartTime_in AND arrivalTime = flightArrivalTime_in;
 END
 DELIMITER;
 
@@ -43,9 +43,9 @@ CREATE PROCEDURE upgradeClassBooking(
 IN flightID_in INT(11), 
 IN flightClass_in VARCHAR(45))
 BEGIN
-	  UPDATE FlightCosts
-    SET flightPrice = flightPrice + 200
-    WHERE flightClass <> flightClass_in AND flightID = flightID_in;
+	UPDATE FlightCosts
+    	SET flightPrice = flightPrice + 200
+    	WHERE flightClass <> flightClass_in AND flightID = flightID_in;
 END
 DELIMITER;
 
@@ -63,7 +63,7 @@ IN arrivalDate_in DATE,
 IN arrivalTime_in TIME,
 IN flightDistance_in INT(11))
 BEGIN
- insert into FlightSchedules values (airlineID_in, departCode_in, departDate_in,
+	insert into FlightSchedules values (airlineID_in, departCode_in, departDate_in,
 			departTime_in, arrivalCode_in, arrivalDate_in, arrivalTime_in, flightDistance_in );
 END//
 DELIMITER;
