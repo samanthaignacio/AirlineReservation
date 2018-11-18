@@ -64,6 +64,6 @@ IN arrivalTime_in TIME,
 IN flightDistance_in INT(11))
 BEGIN
 	insert into FlightSchedules values (airlineID_in, departCode_in, departDate_in,
-	departTime_in, arrivalCode_in, arrivalDate_in, arrivalTime_in, flightDistance_in );
+	departTime_in, arrivalCode_in, arrivalDate_in, arrivalTime_in, flightDistance_in);
 END//
 DELIMITER;
