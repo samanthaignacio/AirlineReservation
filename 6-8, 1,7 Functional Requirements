@@ -56,14 +56,14 @@ END//
 DELIMITER;
 
 //Admin #7
-DROP PROCEDURE IF EXISTS upgradeClassBooking;
+DROP PROCEDURE IF EXISTS upgradeClassPrice;
 DELIMITER //
-CREATE PROCEDURE upgradeClassBooking(
+CREATE PROCEDURE upgradeClassPrice(
 IN flightID_in INT(11), 
 IN flightClass_in VARCHAR(45))
 BEGIN
 	UPDATE FlightCosts
     	SET flightPrice = flightPrice + 200
-    	WHERE flightClass <> flightClass_in AND flightID = flightID_in;
+    	WHERE flightClass = flightClass_in AND flightID = flightID_in;
 END
 DELIMITER;
