@@ -53,7 +53,7 @@ DELIMITER;
 DROP PROCEDURE IF EXISTS getFlightByPrice;
 DELIMITER//
 CREATE PROCEDURE getFlightByPrice(
-IN flightPrice_in INT, 
+IN flightPrice_in INT) 
 BEGIN  
 	SELECT flightID, flightPrice
 		FROM FlightCosts
