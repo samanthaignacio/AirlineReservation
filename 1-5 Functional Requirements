@@ -16,10 +16,10 @@ DELIMETER;
 DROP PROCEDURE IF EXISTS deleteBooking;
 DELIMITER 
 CREATE PROCEDURE deleteBooking(
-IN flightID_in INT(11))
+IN ticketNum_in INT(11))
 BEGIN
 	DELETE FROM Booking
-    WHERE bookingFlightID = bookingID_in;
+    WHERE ticketNum = ticketNum_in;
 END
 DELIMITER;
 
@@ -56,7 +56,7 @@ CREATE PROCEDURE getFlightByPrice(
 IN flightPrice_in INT, 
 BEGIN  
 	SELECT flightID, flightPrice
-		FROM FlightSchedules
+		FROM FlightCosts
     WHERE flightPrice = flightPrice_in;
 END
 DELIMITER;
