@@ -9,7 +9,7 @@ public class Main extends User
 
    //  Database credentials
    static final String USER = "root";
-   static final String PASS = "password";
+   static final String PASS = "S@mantha1297";
    
    static Connection conn = null;
    static Statement stmt = null;
@@ -41,17 +41,17 @@ public class Main extends User
 	}	
   }
   
-  public static void mainMenu() {
+  public static void mainMenu() throws SQLException {
 	  Scanner scan = new Scanner(System.in);
 	  
 	  System.out.println("Select one of the following options:");
 	  System.out.println("[P]ublic User [A]dministrator");
 	  String input = scan.next();
 	  if (input.equals("P") || input.equals("p")) {
-		  publicMenu();
+		  publicMenu(conn);
 	  }
 	  else if (input.equals("A") || input.equals("a")) {
-		  adminMenu();
+		  adminMenu(conn);
 	  }
 	  else {
 		  System.out.println("That is not a valid option. Please try again.");
