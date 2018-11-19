@@ -1,8 +1,9 @@
+import java.sql.*;
 import java.util.*;
 
 public class User {
 
-	public static void publicMenu() {
+	public static void publicMenu(Connection c) throws SQLException {
 		Scanner publicScan = new Scanner(System.in);
 
 		System.out.println("Welcome Public User!");
@@ -18,7 +19,7 @@ public class User {
 
 		String input = publicScan.next();
 		if (input.equals("A") || input.equals("a")) {
-			addBooking();
+			addBooking(c);
 		}
 		else if (input.equals("D") || input.equals("d")) {
 			deleteBooking();
@@ -44,11 +45,32 @@ public class User {
 		else {
 			System.out.println("That is not a valid option. Please try again.");
 			System.out.println();
-			publicMenu();
+			publicMenu(c);
 		}
 	}
 
-	public static void addBooking() {
+	public static void addBooking(Connection c) throws SQLException {
+		Scanner scan = new Scanner(System.in);
+		
+		System.out.println("Please enter the following:");
+		System.out.print("Account ID: ");
+		String result = scan.next();
+		int acctID = Integer.parseInt(result);
+		
+		System.out.print("Flight ID: ");
+		result = scan.next();
+		int fltID = Integer.parseInt(result);
+		
+		System.out.print("Payment ID: ");
+		result = scan.next();
+		int payID = Integer.parseInt(result);
+		
+		CallableStatement cs = c.prepareCall("{CALL addBooking(?, ?, ?)}");
+		cs.setInt(1, acctID);
+		cs.setInt(2,  fltID);
+		cs.setInt(3,  payID);
+		
+		cs.executeUpdate();
 		
 	}
 
@@ -80,7 +102,7 @@ public class User {
 		
 	}
 
-	public static void adminMenu() {
+	public static void adminMenu(Connection c) {
 		Scanner adminScan = new Scanner(System.in);
 
 		System.out.println("Welcome Administrator!");
@@ -118,7 +140,7 @@ public class User {
 		else {
 			System.out.println("That is not a valid option. Please try again.");
 			System.out.println();
-			adminMenu();
+			adminMenu(c);
 		}
 	}
 	
