@@ -36,19 +36,6 @@ BEGIN
 END
 DELIMITER;
 
-//Public User #9
-DROP PROCEDURE IF EXISTS upgradeClassBooking;
-DELIMITER //
-CREATE PROCEDURE upgradeClassBooking(
-IN flightID_in INT(11), 
-IN flightClass_in VARCHAR(45))
-BEGIN
-	UPDATE FlightCosts
-    	SET flightPrice = flightPrice + 200
-    	WHERE flightClass <> flightClass_in AND flightID = flightID_in;
-END
-DELIMITER;
-
 // Admin #1
 DROP PROCEDURE IF EXISTS addFlightSchedule;
 DELIMITER //
@@ -66,4 +53,17 @@ BEGIN
 	insert into FlightSchedules values (airlineID_in, departCode_in, departDate_in,
 	departTime_in, arrivalCode_in, arrivalDate_in, arrivalTime_in, flightDistance_in);
 END//
+DELIMITER;
+
+//Admin #7
+DROP PROCEDURE IF EXISTS upgradeClassBooking;
+DELIMITER //
+CREATE PROCEDURE upgradeClassBooking(
+IN flightID_in INT(11), 
+IN flightClass_in VARCHAR(45))
+BEGIN
+	UPDATE FlightCosts
+    	SET flightPrice = flightPrice + 200
+    	WHERE flightClass <> flightClass_in AND flightID = flightID_in;
+END
 DELIMITER;
