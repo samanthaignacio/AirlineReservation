@@ -89,7 +89,7 @@ public class User {
 	}
 
 	public static void retrieveBooking() {
-
+		
 	}
 
 	public static void flightsByAirport() {
@@ -112,7 +112,7 @@ public class User {
 		
 	}
 
-	public static void adminMenu(Connection c) {
+	public static void adminMenu(Connection c) throws SQLException{
 		Scanner adminScan = new Scanner(System.in);
 
 		System.out.println("Welcome Administrator!");
@@ -130,7 +130,7 @@ public class User {
 			addFlightSchedule();
 		}
 		else if (input.equals("D") || input.equals("d")) {
-			deleteFlightSchedule();
+			deleteFlightSchedule(c);
 		}
 		else if (input.equals("U") || input.equals("u")) {
 			updateFlightSchedule();
@@ -158,8 +158,18 @@ public class User {
 		
 	}
 	
-	public static void deleteFlightSchedule() {
+	public static void deleteFlightSchedule(Connection c) throws SQLException {
+		Scanner scan = new Scanner(System.in);
 		
+		System.out.println("Please enter the following:");
+		System.out.print("Flight ID: ");
+		String result = scan.next();
+		int fltID = Integer.parseInt(result);
+		
+		CallableStatement cs = c.prepareCall("{CALL deleteFLightSchedule(?)}");
+		cs.setInt(1, fltID);
+		
+		cs.executeUpdate();
 	}
 	
 	public static void updateFlightSchedule() {
