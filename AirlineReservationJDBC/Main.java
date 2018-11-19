@@ -9,7 +9,7 @@ public class Main extends User
 
    //  Database credentials
    static final String USER = "root";
-   static final String PASS = "S@mantha1297";
+   static final String PASS = "password";
    
    static Connection conn = null;
    static Statement stmt = null;
