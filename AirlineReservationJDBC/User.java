@@ -22,7 +22,7 @@ public class User {
 			addBooking(c);
 		}
 		else if (input.equals("D") || input.equals("d")) {
-			deleteBooking();
+			deleteBooking(c);
 		}
 		else if (input.equals("R") || input.equals("r")) {
 			retrieveBooking();
@@ -74,8 +74,18 @@ public class User {
 		
 	}
 
-	public static void deleteBooking() {
-
+	public static void deleteBooking(Connection c) throws SQLException {
+		Scanner scan = new Scanner(System.in);
+		
+		System.out.println("Please enter the following:");
+		System.out.print("Ticket Number: ");
+		String result = scan.next();
+		int ticketNum = Integer.parseInt(result);
+		
+		CallableStatement cs = c.prepareCall("{CALL deleteBooking(?)}");
+		cs.setInt(1, ticketNum);
+		
+		cs.executeUpdate();
 	}
 
 	public static void retrieveBooking() {
