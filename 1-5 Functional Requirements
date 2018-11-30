@@ -4,9 +4,10 @@ DELIMITER
 CREATE PROCEDURE addBooking(
 IN accountID_in  int(11),
 IN flightID_in int(11),
-IN paymentID_in int(11))
+IN paymentID_in int(11),
+IN updated_in date)
 BEGIN
-	insert into Booking(accountID, flightID, paymentID) values(accountID_in, flightID_in, paymentID_in);
+	insert into Booking(accountID, flightID, paymentIDm updatedAt) values(accountID_in, flightID_in, paymentID_in, updated_in);
 END
 DELIMETER;
 
