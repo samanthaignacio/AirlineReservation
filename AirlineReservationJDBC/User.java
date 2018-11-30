@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.sql.Date;
+import java.time.*;
 import java.util.*;
 
 public class User {
@@ -52,6 +54,9 @@ public class User {
 	public static void addBooking(Connection c) throws SQLException {
 		Scanner scan = new Scanner(System.in);
 		
+		LocalDate ld = java.time.LocalDate.now();
+		Date d = java.sql.Date.valueOf(ld);
+		
 		System.out.println("Please enter the following:");
 		System.out.print("Account ID: ");
 		String result = scan.next();
@@ -65,10 +70,11 @@ public class User {
 		result = scan.next();
 		int payID = Integer.parseInt(result);
 		
-		CallableStatement cs = c.prepareCall("{CALL addBooking(?, ?, ?)}");
+		CallableStatement cs = c.prepareCall("{CALL addBooking(?, ?, ?, ?)}");
 		cs.setInt(1, acctID);
 		cs.setInt(2,  fltID);
 		cs.setInt(3,  payID);
+		cs.setDate(4, d);
 		
 		cs.executeUpdate();
 		
@@ -124,6 +130,7 @@ public class User {
 		System.out.println("[1] See list of passengers for a flight");
 		System.out.println("[2] See list of flights for a passenger");
 		System.out.println("[3] See list of passengers age 21+");
+		System.out.println("[*] Archive Flights");
 
 		String input = adminScan.next();
 		if (input.equals("A") || input.equals("a")) {
@@ -146,6 +153,9 @@ public class User {
 		}
 		else if (input.equals("3")) {
 			passengersOverAge();
+		}
+		else if (input.equals("*")) {
+			archiveFlights();
 		}
 		else {
 			System.out.println("That is not a valid option. Please try again.");
@@ -189,6 +199,10 @@ public class User {
 	}
 	
 	public static void passengersOverAge() {
+		
+	}
+	
+	public static void archiveFlights() {
 		
 	}
 }
