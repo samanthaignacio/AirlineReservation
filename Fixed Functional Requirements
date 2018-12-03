@@ -1,0 +1,66 @@
+// outer join
+-- 6. PUBLIC USER: See list of flights by airline
+DROP PROCEDURE IF EXISTS getFlightAirline
+DELIMITER //
+CREATE PROCEDURE getFlightAirline(
+IN airlineName_in VARCHAR(45))
+BEGIN
+SELECT flightID, departDate
+FROM FlightSchedules right outer join Airline
+on FlightSchedules.airlineID = Airline.airlineID
+where airlineName = airlineName_in;
+END//
+DELIMITER;
+
+//group by
+-- 7. PUBLIC USER: See list of flights by date
+DROP PROCEDURE IF EXISTS getFlightDate;
+DELIMITER //
+CREATE PROCEDURE getFlightDate(
+IN flightDepartDate_in DATE)
+BEGIN
+SELECT flightID, departDate
+FROM FlightSchedules group by departDate having
+departDate = flightDepartDate_in;
+END//
+DELIMITER;
+
+//aggregation
+-- 4. ADMIN: Sees list of passengers for specific flight
+DROP PROCEDURE IF EXISTS getPassengersForFlight;
+DELIMITER //
+CREATE PROCEDURE getPassengersForFlight(
+IN flightID_in INT(11))
+BEGIN
+SELECT passengerName, count(*)
+FROM Passengers natural join Booking group by flightID
+WHERE flightID = flightID_in 
+END//
+DELIMITER;
+
+//Correlated
+-- 5. ADMIN: Sees list of flights for a specific passenger
+DROP PROCEDURE IF EXISTS getFlightsForPassenger;
+DELIMITER //
+CREATE PROCEDURE getFlightsForPassenger(
+IN passengerName_in VARCHAR(45))
+BEGIN
+SELECT passengerName, flightID
+FROM (Passengers natural join Booking) as B1
+exists (select * from (Passengers natural join Booking) as B2
+WHERE passengerName = passengerName_in and B1.flightId <> B2.flightID);
+END//
+DELIMITER;
+
+//set operation
+-- 6. ADMIN: Sees list of passengers who are over 21
+DROP PROCEDURE IF EXISTS getPassengerOver21;
+DELIMITER //
+CREATE PROCEDURE getPassengerOver21(
+IN flightID_in INT(11))
+BEGIN
+SELECT flightID, passengerName
+FROM Passengers natural join Booking
+WHERE flightID_in in (select flightID from Booking where AND passengerAge > 20);
+END//
+DELIMITER;
