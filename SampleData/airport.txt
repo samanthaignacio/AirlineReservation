@@ -1,0 +1,15 @@
+SMF	Sacramento	United States
+SFO	San Francisco	United States
+SJC	San Jose	United States
+LAX	Los Angeles	United States
+DTW	Detroit	United States
+JFK	New York	United States
+DFW	Dallas	United States
+DEN	Denver	United States
+MIA	Miami	United States
+CUN	Cancun	Mexico
+TIJ	Tijuana	Mexico
+SYD	Sydney	Australia
+VCE	Venice	Italy
+MNL	Manila	Philippines
+PEK	Beijing	China
