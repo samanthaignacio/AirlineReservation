@@ -1,11 +1,12 @@
 import java.sql.*;
+import java.text.ParseException;
 import java.util.*;
  
 public class Main extends User
 {
    // JDBC driver name and database URL
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   static final String DB_URL = "jdbc:mysql://localhost/AirlineReservation";
+   static final String DB_URL = "jdbc:mysql://localhost/GreenAirlineReservation";
 
    //  Database credentials
    static final String USER = "root";
@@ -15,7 +16,7 @@ public class Main extends User
    static Statement stmt = null;
    static ResultSet rs = null;
    
-  public static void main(String[] argv) throws SQLException {
+  public static void main(String[] argv) throws SQLException, ParseException {
  
 	try {
 	 //STEP 2: Register JDBC driver (automatically done since JDBC 4.0)
@@ -41,7 +42,7 @@ public class Main extends User
 	}	
   }
   
-  public static void mainMenu() throws SQLException {
+  public static void mainMenu() throws SQLException, ParseException {
 	  Scanner scan = new Scanner(System.in);
 	  
 	  System.out.println("Select one of the following options:");
