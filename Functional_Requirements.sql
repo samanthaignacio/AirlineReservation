@@ -4,11 +4,10 @@ DELIMITER //
 CREATE PROCEDURE addBooking(
 IN accountID_in  int(11),
 IN flightID_in int(11),
-IN paymentID_in int(11),
 IN updated_in DATE)
 BEGIN
-	INSERT INTO Booking(accountID, flightID, paymentID, updatedAt) VALUES(accountID_in, flightID_in, paymentID_in, updated_in);
-END
+	INSERT INTO Booking(accountID, flightID, updatedAt) VALUES(accountID_in, flightID_in, updated_in);
+END//
 DELIMITER;
 
 
@@ -20,7 +19,7 @@ IN ticketNum_in INT(11))
 BEGIN
 	DELETE FROM Booking
     WHERE ticketNum = ticketNum_in;
-END
+END//
 DELIMITER;
 
 -- 3. PUBLIC USER: Retrieves existing reservation info
@@ -29,7 +28,7 @@ DELIMITER //
 CREATE PROCEDURE getBooking(
 IN accountID_in INT(11))
 BEGIN
-	SELECT ticketNum, flightID, paymentID
+	SELECT ticketNum, flightID
 	FROM Booking
 	WHERE accountID = accountID_in;
 END//
@@ -53,23 +52,24 @@ DELIMITER;
 DROP PROCEDURE IF EXISTS getFlightByPrice;
 DELIMITER //
 CREATE PROCEDURE getFlightByPrice(
-IN flightPrice_in INT, 
+IN flightPrice_in INT) 
 BEGIN  
-	SELECT flightID, flightPrice
+	SELECT flightID, flightClass, flightPrice
 	FROM FlightCosts
-    WHERE flightPrice = flightPrice_in;
+	WHERE flightPrice = flightPrice_in;
 END
 DELIMITER;
 
+-- OUTER JOIN
 -- 6. PUBLIC USER: See list of flights by airline
 DROP PROCEDURE IF EXISTS getFlightAirline;
 DELIMITER //
 CREATE PROCEDURE getFlightAirline(
 IN airlineName_in VARCHAR(45))
-BEGIN 
-	SELECT flightID, airlineName
-    FROM Airline, FlightSchedules
-    WHERE airlineName = airlineName_in AND FlightSchedules.airlineID = Airline.airlineID;
+BEGIN
+	SELECT Airline.airlineName, flightID, departDate
+	FROM FlightSchedules right outer join Airline on FlightSchedules.airlineID = Airline.airlineID
+	WHERE airlineName = airlineName_in;
 END//
 DELIMITER;
 
@@ -79,10 +79,10 @@ DELIMITER //
 CREATE PROCEDURE getFlightDate(
 IN flightDepartDate_in DATE)
 BEGIN  
-	SELECT flightID, departDate
+	SELECT flightID, departDate, departCode
    	FROM FlightSchedules
     WHERE departDate = flightDepartDate_in;
-END
+END//
 DELIMITER;
 
 -- 8. PUBLIC USER: See list of flights by time
@@ -91,10 +91,40 @@ DELIMITER //
 CREATE PROCEDURE getFlightTime(
 IN flightDepartTime_in TIME)
 BEGIN  
-	SELECT flightID, departTime
+	SELECT flightID, departTime, departCode
     FROM FlightSchedules
     WHERE departTime = flightDepartTime_in;
-END
+END//
+DELIMITER;
+
+-- AGGREGATION
+-- 9. PUBLIC USER: See farthest distance for a specific airline
+DROP PROCEDURE IF EXISTS getMaxDistance;
+DELIMITER //
+CREATE PROCEDURE getMaxDistance(
+IN airlineName_in VARCHAR(45))
+BEGIN  
+	SELECT Airline.airlineName, max(flightDistance) AS flightDistance
+    FROM Airline, FlightSchedules
+    WHERE Airline.airlineID = FlightSchedules.airlineID AND Airline.airlineName = airlineName_in;
+END//
+DELIMITER;
+
+-- SET OPERATION (UNION)
+-- 10. PUBLIC USER: See number of flights for each airline
+DROP PROCEDURE IF EXISTS getNumberOfFlights;
+DELIMITER //
+CREATE PROCEDURE getNumberOfFlights()
+BEGIN  
+	SELECT Airline.airlineName, count(flightID) as totalFlights
+	FROM Airline, FlightSchedules
+	WHERE Airline.airlineID = Flightschedules.airlineID
+	GROUP BY FlightSchedules.airlineID
+	UNION
+	SELECT Airline.airlineName, 0
+	FROM Airline
+	WHERE airlineID NOT IN (SELECT Airline.airlineID FROM Airline, Flightschedules WHERE Flightschedules.airlineID = Airline.airlineID);
+END//
 DELIMITER;
 
 -- 1. ADMIN: Adds flight schedule
@@ -168,32 +198,20 @@ BEGIN
 END//
 DELIMITER;
 
+-- CORRELATED SUBQUERY
 -- 5. ADMIN: Sees list of flights for a specific passenger
 DROP PROCEDURE IF EXISTS getFlightsForPassenger;
 DELIMITER //
 CREATE PROCEDURE getFlightsForPassenger(
 IN passengerName_in VARCHAR(45))
 BEGIN
-	SELECT passengerName, flightID
-	FROM Passengers, Booking
-	WHERE passengerName = passengerName_in AND Passengers.accountID = Booking.accountID;
+	SELECT *
+	FROM (SELECT passengerName, flightID FROM Passengers NATURAL JOIN Booking) B1
+	WHERE B1.passengerName = passengerName_in;
 END//
 DELIMITER;
 
--- 6. ADMIN: Sees list of passengers who are over 21
-DROP PROCEDURE IF EXISTS getPassengerOver21;
-DELIMITER //
-CREATE PROCEDURE getPassengerOver21(
-IN flightID_in INT(11))
-BEGIN
-	SELECT flightID, passengerName
-	FROM Passengers, Booking
-	WHERE flightID = flightID_in AND Passengers.accountID = Booking.accountID
-	AND passengerAge > 20;
-END//
-DELIMETER;
-
--- 7. ADMIN: Upgrades class price (adds $200 to price of flight)
+-- 6. ADMIN: Upgrades class price (adds $200 to price of flight)
 DROP PROCEDURE IF EXISTS upgradeClassPrice;
 DELIMITER //
 CREATE PROCEDURE upgradeClassPrice(
@@ -203,7 +221,20 @@ BEGIN
 	UPDATE FlightCosts
     SET flightPrice = flightPrice + 200
     WHERE flightClass = flightClass_in AND flightID = flightID_in;
-END
+END//
+DELIMITER;
+
+-- GROUP BY/HAVING
+-- 7. ADMIN: Get number of passengers on each flight
+DROP PROCEDURE IF EXISTS getPassengerCount;
+DELIMITER //
+CREATE PROCEDURE getPassengerCount()
+BEGIN
+	SELECT flightID, count(ticketNum) AS passengerNum
+	FROM Booking
+	GROUP BY flightID
+	HAVING passengerNum >= 0;
+END//
 DELIMITER;
 
 -- 8. ADMIN: Archive bookings
@@ -214,12 +245,12 @@ IN cutOffTime DATE)
 BEGIN
 	START TRANSACTION;
 		INSERT INTO BookingArchive
-        SELECT ticketNum, flightID, accountID, paymentID, updatedAt
+        SELECT ticketNum, flightID, accountID, updatedAt
         FROM Booking
         WHERE updatedAt < cutOffTime;
         
         DELETE FROM Booking
         WHERE updatedAt < cutOffTime;
     COMMIT;
-END
+END//
 DELIMITER;
