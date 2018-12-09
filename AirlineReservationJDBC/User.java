@@ -541,10 +541,6 @@ public class User {
 		}
 	}
 
-	public static void passengersOverAge() {
-
-	}
-
 	public static void passengerCount(Connection c) throws SQLException {
 		CallableStatement cs = c.prepareCall("{CALL getPassengerCount()}");
 
@@ -573,7 +569,7 @@ public class User {
 
 		CallableStatement cs = c.prepareCall("{CALL archiveBookings(?)}");
 		cs.setDate(1, cutDate);
-
+		
 		cs.executeUpdate();
 
 		System.out.println("Booking(s) has been archived!");
