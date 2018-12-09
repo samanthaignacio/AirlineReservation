@@ -105,10 +105,9 @@ BEGIN
   INSERT INTO BookingArchive
   SELECT ticketNum, flightID, accountID, updatedAt
   FROM Booking
-  WHERE Booking.ticketNum = OLD.ticketNum;
+  WHERE ticketNum NOT IN (SELECT ticketNum FROM BookingArchive);
 END;//
 DELIMITER ;
-
 
 LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/FINAL SUBMISSION/SampleData/airline.txt' INTO TABLE Airline;
 LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/FINAL SUBMISSION/SampleData/airport.txt' INTO TABLE Airports;
