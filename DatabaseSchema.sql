@@ -110,8 +110,7 @@ END;//
 DELIMITER ;
 
 
-LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/UPDATED SQL/airline.txt' INTO TABLE Airline;
-LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/UPDATED SQL/airport.txt' INTO TABLE Airports;
-LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/UPDATED SQL/flightschedule.txt' INTO TABLE FlightSchedules;
-LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/UPDATED SQL/flightcosts.txt' INTO TABLE FlightCosts;
-LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/UPDATED SQL/passengers.txt' INTO TABLE Passengers;
+LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/FINAL SUBMISSION/SampleData/airline.txt' INTO TABLE Airline;
+LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/FINAL SUBMISSION/SampleData/airport.txt' INTO TABLE Airports;
+LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/FINAL SUBMISSION/SampleData/flightschedule.txt' INTO TABLE FlightSchedules;
+LOAD DATA LOCAL INFILE '/Users/samanthaignacio/School/SJSU/FALL 2018/CS 157A/PROJECT/FINAL SUBMISSION/SampleData/passengers.txt' INTO TABLE Passengers;
