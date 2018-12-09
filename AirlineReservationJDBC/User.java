@@ -302,8 +302,7 @@ public class User {
 		System.out.println("[I]ncrease a class price");
 		System.out.println("[1] See list of passengers for a flight");
 		System.out.println("[2] See list of flights for a passenger");
-		System.out.println("[3] See list of passengers age 21+");
-		System.out.println("[4] See number of passengers on each flight");
+		System.out.println("[3] See number of passengers on each flight");
 		System.out.println("[*] Archive Flights");
 		System.out.println("[E]xit");
 
@@ -327,9 +326,6 @@ public class User {
 			flightsPerPassenger(c);
 			adminMenu(c);
 		} else if (input.equals("3")) {
-			passengersOverAge();
-			adminMenu(c);
-		} else if (input.equals("4")) {
 			passengerCount(c);
 			adminMenu(c);
 		} else if (input.equals("*")) {
